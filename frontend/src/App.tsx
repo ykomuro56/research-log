@@ -1,6 +1,6 @@
 import LogForm from "./components/LogForm";
 import LogList from "./components/LogList";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
@@ -11,6 +11,18 @@ function App() {
 	{ title: string; content: string }[]
 	>([]);
 
+	const fetchLogs = () => {
+	  fetch("http://localhost:8080/api/logs")
+	    .then((response) => response.json())
+	    .then((data) => {
+	      setLogs(data);
+	    });
+	};
+
+	useEffect(() => {
+		fetchLogs();
+	}, []);
+
 	const deleteLog = (index: number) => {
 	  setLogs(logs.filter((_, i) => i !== index));
 	};
@@ -18,18 +30,22 @@ function App() {
 	const saveLog = () => {
 	  if (!title || !content) return;
 
-	  setLogs([
-	    ...logs,
-	    {
+	  fetch("http://localhost:8080/api/logs", {
+	    method: "POST",
+	    headers: {
+	      "Content-Type": "application/json",
+	    },
+	    body: JSON.stringify({
 	      title,
 	      content,
-	    },
-	  ]);
+	    }),
+	  }).then(() => {
+	    fetchLogs();
 
-	  setTitle("");
-	  setContent("");
+	   	setTitle("");
+	    setContent("");
+	  });
 	};
-
 	return (
 			<div style={{ maxWidth: "800px", margin: "40px auto" }}>
 			<h1>Research Log</h1>
