@@ -1,6 +1,7 @@
 import LogItem from "./LogItem";
 
 type Log = {
+  id: number;
   title: string;
   content: string;
 };
@@ -18,11 +19,11 @@ function LogList({ logs, onDelete }: LogListProps) {
       {logs.length === 0 ? (
         <p>まだ記録はありません。</p>
       ) : (
-      logs.map((log, index) => (
+      logs.map((log) => (
 	  	<LogItem
-		  key={index}
+		  key={log.id}
 		  log={log}
-		  onDelete={() => onDelete(index)}
+		  onDelete={() => onDelete(log.id)}
 		/>
 	  ))
 	  )}

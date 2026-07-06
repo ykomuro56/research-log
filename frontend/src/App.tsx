@@ -8,7 +8,7 @@ function App() {
 	const [content, setContent] = useState("");
 	
 	const [logs, setLogs] = useState<
-	{ title: string; content: string }[]
+	{ id: number; title: string; content: string }[]
 	>([]);
 
 	const fetchLogs = () => {
@@ -23,13 +23,21 @@ function App() {
 		fetchLogs();
 	}, []);
 
-	const deleteLog = (index: number) => {
-	  setLogs(logs.filter((_, i) => i !== index));
+	const deleteLog = (id: number) => {
+	  fetch(
+		`http://localhost:8080/api/logs/${id}`,
+	    {
+		  method: "DELETE",
+		}
+	  ).then(() => {
+	    fetchLogs();
+	  });
 	};
 
 	const saveLog = () => {
-	  if (!title || !content) return;
-
+	  if (!title || !content) {
+	  return;
+	  }
 	  fetch("http://localhost:8080/api/logs", {
 	    method: "POST",
 	    headers: {
@@ -39,11 +47,19 @@ function App() {
 	      title,
 	      content,
 	    }),
-	  }).then(() => {
-	    fetchLogs();
-
-	   	setTitle("");
-	    setContent("");
+	  })
+		.then((response) => {
+		    console.log("status =", response.status);
+		    return response.text();
+		  })
+			
+		.then(() => {
+			fetchLogs();
+			setTitle("");
+	    	setContent("");
+		})
+		.catch((err) => {
+		    console.error(err);
 	  });
 	};
 	return (

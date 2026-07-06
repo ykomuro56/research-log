@@ -43,7 +43,11 @@ function LogForm({
 
       <br />
 
-      <button onClick={onSave}>
+      <button
+	    onClick={() => {
+		  onSave();
+		}}
+	  >
         保存
       </button>
     </>
