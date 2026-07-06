@@ -6,29 +6,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
-import java.util.ArrayList;
+
+import com.ykomuro.researchlog.LogRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class LogController {
 
-    private final List<Log> logs = new ArrayList<>(
-        List.of(
-            new Log("Spring Boot", "APIから取得しました！"),
-            new Log("React", "fetch成功！")
-        )
-    );
+	private final LogRepository repository;
+
+	public LogController(LogRepository repository) {
+		this.repository = repository;
+	}
 	@GetMapping("/api/logs")
     public List<Log> getLogs() {
-		return logs;
+		return repository.findAll();
     }
 	@PostMapping("/api/logs")
 	public void addLog(@RequestBody Log log) {
-	    logs.add(log);
+    	System.out.println("POST received: " + log.getTitle());
+
+    repository.save(log);
 	}
-	@DeleteMapping("/api/logs/{index}")
-	public void deleteLog(@PathVariable int index) {
-	    logs.remove(index);
+	@DeleteMapping("/api/logs/{id}")
+	public void deleteLog(@PathVariable Long id) {
+	    repository.deleteById(id);
 	}
 }
