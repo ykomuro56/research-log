@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -42,5 +43,12 @@ public class LogController {
 	    log.setId(id);
 
 	    repository.save(log);
+	}
+	@GetMapping("/api/logs/search")
+	public List<Log> searchLogs(@RequestParam String keyword) {
+    	return repository.findByTitleContainingOrContentContaining(
+    	    keyword,
+    	    keyword
+    	);
 	}
 }
