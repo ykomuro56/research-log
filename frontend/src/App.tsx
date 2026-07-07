@@ -7,6 +7,8 @@ function App() {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [editingId, setEditingId] = useState<number | null>(null);
+	const [keyword, setKeyword] = useState("");
+
 	const [logs, setLogs] = useState<
 	{ id: number; title: string; content: string }[]
 	>([]);
@@ -17,6 +19,14 @@ function App() {
 	    .then((data) => {
 	      setLogs(data);
 	    });
+	};
+
+	const searchLogs = () => {
+		 fetch(`http://localhost:8080/api/logs/search?keyword=${keyword}`)
+		 .then((response) => response.json())
+		 .then((data) => {
+		 setLogs(data);
+		 });
 	};
 
 	useEffect(() => {
@@ -105,6 +115,15 @@ function App() {
 	return (
 			<div style={{ maxWidth: "800px", margin: "40px auto" }}>
 			<h1>Research Log</h1>
+<input
+  value={keyword}
+  onChange={(e) => setKeyword(e.target.value)}
+/>
+
+<button onClick={searchLogs}>
+  Search
+</button>
+
 <LogForm
   title={title}
   content={content}
