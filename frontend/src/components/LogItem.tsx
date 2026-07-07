@@ -6,9 +6,10 @@ type Log = {
 type LogItemProps = {
   log: Log;
   onDelete: () => void;
+  onEdit: () => void;
 };
 
-function LogItem({ log, onDelete }: LogItemProps) {
+function LogItem({ log, onDelete, onEdit }: LogItemProps) {
   return (
     <div
       style={{
@@ -24,6 +25,10 @@ function LogItem({ log, onDelete }: LogItemProps) {
       <button onClick={onDelete}>
         削除
       </button>
+	  <button onClick={onEdit}>
+	 　 編集
+	  </button>
+
     </div>
   );
 }

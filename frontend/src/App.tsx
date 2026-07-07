@@ -6,7 +6,7 @@ import "./App.css";
 function App() {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	
+	const [editingId, setEditingId] = useState<number | null>(null);
 	const [logs, setLogs] = useState<
 	{ id: number; title: string; content: string }[]
 	>([]);
@@ -34,11 +34,24 @@ function App() {
 	  });
 	};
 
+	const editLog = (id: number) => {
+	  console.log("edit", id);
+
+	  const log = logs.find((log) => log.id === id);
+
+	  if (log) {
+		setTitle(log.title);
+		setContent(log.content);
+		setEditingId(log.id);
+	  }
+	};
+
 	const saveLog = () => {
 	  if (!title || !content) {
 	  return;
 	  }
-	  fetch("http://localhost:8080/api/logs", {
+	  if (editingId === null) {
+		fetch("http://localhost:8080/api/logs", {
 	    method: "POST",
 	    headers: {
 	      "Content-Type": "application/json",
@@ -57,10 +70,37 @@ function App() {
 			fetchLogs();
 			setTitle("");
 	    	setContent("");
+			setEditingId(null);
 		})
 		.catch((err) => {
 		    console.error(err);
 	  });
+	  } else {
+		fetch(`http://localhost:8080/api/logs/${editingId}`, {
+	    method: "PUT",
+	    headers: {
+	      "Content-Type": "application/json",
+	    },
+	    body: JSON.stringify({
+	      title,
+	      content,
+	    }),
+	  })
+		.then((response) => {
+		    console.log("status =", response.status);
+		    return response.text();
+		  })
+			
+		.then(() => {
+			fetchLogs();
+			setTitle("");
+	    	setContent("");
+			setEditingId(null);
+		})
+		.catch((err) => {
+		    console.error(err);
+	  });
+	  }
 	};
 	return (
 			<div style={{ maxWidth: "800px", margin: "40px auto" }}>
@@ -76,6 +116,7 @@ function App() {
 <LogList
   logs={logs}
   onDelete={deleteLog}
+  onEdit={editLog}
 />
 
 

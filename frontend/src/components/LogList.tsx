@@ -8,10 +8,11 @@ type Log = {
 
 type LogListProps = {
   logs: Log[];
-  onDelete: (index: number) => void;
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 };
 
-function LogList({ logs, onDelete }: LogListProps) {
+function LogList({ logs, onDelete, onEdit }: LogListProps) {
   return (
     <>
       <h2>記録一覧</h2>
@@ -24,6 +25,7 @@ function LogList({ logs, onDelete }: LogListProps) {
 		  key={log.id}
 		  log={log}
 		  onDelete={() => onDelete(log.id)}
+		  onEdit={() => onEdit(log.id)}
 		/>
 	  ))
 	  )}
