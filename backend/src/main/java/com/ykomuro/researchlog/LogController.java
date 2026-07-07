@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
@@ -27,12 +28,19 @@ public class LogController {
     }
 	@PostMapping("/api/logs")
 	public void addLog(@RequestBody Log log) {
-    	System.out.println("POST received: " + log.getTitle());
-
-    repository.save(log);
+    	repository.save(log);
 	}
 	@DeleteMapping("/api/logs/{id}")
 	public void deleteLog(@PathVariable Long id) {
 	    repository.deleteById(id);
+	}
+	@PutMapping("/api/logs/{id}")
+	public void updateLog(@PathVariable Long id, @RequestBody Log log) {
+
+		System.out.println("PUT recieved: " + id);
+
+	    log.setId(id);
+
+	    repository.save(log);
 	}
 }
