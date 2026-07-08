@@ -4,6 +4,7 @@ type Log = {
   id: number;
   title: string;
   content: string;
+  createdAt: string;
 };
 
 type LogListProps = {

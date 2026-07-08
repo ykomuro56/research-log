@@ -1,6 +1,7 @@
 type Log = {
   title: string;
   content: string;
+  createdAt: string;
 };
 
 type LogItemProps = {
@@ -10,6 +11,21 @@ type LogItemProps = {
 };
 
 function LogItem({ log, onDelete, onEdit }: LogItemProps) {
+  const formattedCreatedAt = new Date(log.createdAt).toLocaleString("ja-JP", {
+  	year:"numeric",
+	month: "2-digit",
+	day: "2-digit",
+	hour: "2-digit",
+	minute: "2-digit",
+  });
+  const formattedUpdatedAt = new Date(log.updatedAt).toLocaleString("ja-JP", {
+  	year:"numeric",
+	month: "2-digit",
+	day: "2-digit",
+	hour: "2-digit",
+	minute: "2-digit",
+  });
+
   return (
     <div
       style={{
@@ -20,7 +36,35 @@ function LogItem({ log, onDelete, onEdit }: LogItemProps) {
       }}
     >
       <h3>{log.title}</h3>
-      <p>{log.content}</p>
+      
+	  <p
+	    style={{
+		  whiteSpace: "pre-wrap",
+		  lineHeight: "1.6",
+		}}
+	  >
+	    {log.content}
+	  </p>
+
+	  <p
+	    style={{
+		  color: "#666",
+		  fontSize: "0.85rem",
+		  margin: "4px 0",
+		}}
+	  >
+	    📅 作成: {formattedCreatedAt}
+	  </p>
+	  <p
+	    style={{
+		  color: "#666",
+		  fontSize: "0.85rem",
+		  margin: "12px",
+		}}
+	  >
+	    ✏️ 更新: {formattedUpdatedAt}
+	  </p>
+
 
       <button onClick={onDelete}>
         削除
