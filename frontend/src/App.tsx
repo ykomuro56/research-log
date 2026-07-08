@@ -10,7 +10,7 @@ function App() {
 	const [keyword, setKeyword] = useState("");
 
 	const [logs, setLogs] = useState<
-	{ id: number; title: string; content: string }[]
+	{ id: number; title: string; content: string; createdAt: string; }[]
 	>([]);
 
 	const fetchLogs = () => {

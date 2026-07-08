@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 import com.ykomuro.researchlog.LogRepository;
 
@@ -23,27 +24,38 @@ public class LogController {
 	public LogController(LogRepository repository) {
 		this.repository = repository;
 	}
+
 	@GetMapping("/api/logs")
     public List<Log> getLogs() {
 		return repository.findAll();
     }
+
 	@PostMapping("/api/logs")
 	public void addLog(@RequestBody Log log) {
+		LocalDateTime now = LocalDateTime.now();
+
+		log.setCreatedAt(now);
+		log.setUpdatedAt(now);
     	repository.save(log);
 	}
+
 	@DeleteMapping("/api/logs/{id}")
 	public void deleteLog(@PathVariable Long id) {
 	    repository.deleteById(id);
 	}
+
 	@PutMapping("/api/logs/{id}")
 	public void updateLog(@PathVariable Long id, @RequestBody Log log) {
 
+		Log oldLog = repository.findById(id).orElseThrow();
 		System.out.println("PUT recieved: " + id);
-
 	    log.setId(id);
+		log.setCreatedAt(oldLog.getCreatedAt());
+		log.setUpdatedAt(LocalDateTime.now());
 
 	    repository.save(log);
 	}
+
 	@GetMapping("/api/logs/search")
 	public List<Log> searchLogs(@RequestParam String keyword) {
     	return repository.findByTitleContainingOrContentContaining(

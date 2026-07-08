@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import java.time.LocalDateTime;
 
 @Entity
 public class Log {
@@ -14,6 +15,8 @@ public class Log {
     
 	private String title;
     private String content;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 
 	public Long getId() {
 		return id;
@@ -44,4 +47,22 @@ public class Log {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getupdatedAt() {
+		return updatedAt;
+     }
+
+     public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+ 	}
+
+
 }
