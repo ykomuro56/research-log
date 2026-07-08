@@ -1,7 +1,14 @@
+type Tag = {
+  id: number;
+  name: string;
+};
+
 type Log = {
   title: string;
   content: string;
   createdAt: string;
+  updatedAt: string;
+  tags: Tag[];
 };
 
 type LogItemProps = {
@@ -37,6 +44,26 @@ function LogItem({ log, onDelete, onEdit }: LogItemProps) {
     >
       <h3>{log.title}</h3>
       
+	  <div style={{ marginBottom: "8px" }}>
+	    {log.tags.map((tag) => (
+	      <span
+	        key={tag.id}
+	        style={{
+   		      display: "inline-block",
+        	  padding: "2px 8px",
+        	  marginRight: "6px",
+        	  marginBottom: "6px",
+        	  border: "1px solid #ccc",
+        	  borderRadius: "999px",
+        	  fontSize: "0.8rem",
+        	  background: "#f5f5f5",
+      	    }}
+    	  >
+     	   🏷️ {tag.name}
+    	  </span>
+  	    ))}
+	  </div>
+	  
 	  <p
 	    style={{
 		  whiteSpace: "pre-wrap",

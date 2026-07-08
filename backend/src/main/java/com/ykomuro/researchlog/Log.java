@@ -5,6 +5,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
+import jakarta.persistence.ManyToMany;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 public class Log {
@@ -17,6 +20,9 @@ public class Log {
     private String content;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+
+	@ManyToMany
+	private List<Tag> tags = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -64,5 +70,11 @@ public class Log {
         this.updatedAt = updatedAt;
  	}
 
+	public List<Tag> getTags() {
+		return tags;
+	}
 
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
 }

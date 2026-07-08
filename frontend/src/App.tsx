@@ -3,15 +3,28 @@ import LogList from "./components/LogList";
 import { useState, useEffect } from "react";
 import "./App.css";
 
+type Tag = {
+  id: number;
+  name: string;
+};
+
+type Log = {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  tags: Tag[];
+};
+
 function App() {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
+	const [tags, setTags] = useState("");
 	const [editingId, setEditingId] = useState<number | null>(null);
 	const [keyword, setKeyword] = useState("");
 
-	const [logs, setLogs] = useState<
-	{ id: number; title: string; content: string; createdAt: string; }[]
-	>([]);
+	const [logs, setLogs] = useState<Log[]>([]);
 
 	const fetchLogs = () => {
 	  fetch("http://localhost:8080/api/logs")
@@ -45,18 +58,20 @@ function App() {
 	};
 
 	const editLog = (id: number) => {
-	  console.log("edit", id);
-
 	  const log = logs.find((log) => log.id === id);
 
 	  if (log) {
 		setTitle(log.title);
 		setContent(log.content);
+		setTags(log.tags.map((tag) =>tag.name).join(", "));
 		setEditingId(log.id);
 	  }
 	};
 
 	const saveLog = () => {
+		console.log("title =", title);
+		console.log("content =", content);
+		console.log("tags =", tags);
 	  if (!title || !content) {
 	  return;
 	  }
@@ -69,6 +84,7 @@ function App() {
 	    body: JSON.stringify({
 	      title,
 	      content,
+		  tags,
 	    }),
 	  })
 		.then((response) => {
@@ -80,6 +96,7 @@ function App() {
 			fetchLogs();
 			setTitle("");
 	    	setContent("");
+			setTags("");
 			setEditingId(null);
 		})
 		.catch((err) => {
@@ -94,6 +111,7 @@ function App() {
 	    body: JSON.stringify({
 	      title,
 	      content,
+		  tags,
 	    }),
 	  })
 		.then((response) => {
@@ -105,6 +123,7 @@ function App() {
 			fetchLogs();
 			setTitle("");
 	    	setContent("");
+			setTags("");
 			setEditingId(null);
 		})
 		.catch((err) => {
@@ -121,15 +140,17 @@ function App() {
 />
 
 <button onClick={searchLogs}>
-  Search
+  検索
 </button>
 
 <LogForm
   title={title}
   content={content}
+  tags={tags}
   setTitle={setTitle}
   setContent={setContent}
   onSave={saveLog}
+  setTags={setTags}
 />
 
 <LogList

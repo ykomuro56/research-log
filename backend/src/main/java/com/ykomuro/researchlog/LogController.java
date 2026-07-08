@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.time.LocalDateTime;
 
 import com.ykomuro.researchlog.LogRepository;
@@ -20,9 +21,11 @@ import com.ykomuro.researchlog.LogRepository;
 public class LogController {
 
 	private final LogRepository repository;
+	private final TagRepository tagRepository;
 
-	public LogController(LogRepository repository) {
+	public LogController(LogRepository repository, TagRepository tagRepository) {
 		this.repository = repository;
+		this.tagRepository = tagRepository;
 	}
 
 	@GetMapping("/api/logs")
@@ -31,11 +34,20 @@ public class LogController {
     }
 
 	@PostMapping("/api/logs")
-	public void addLog(@RequestBody Log log) {
+	public void addLog(@RequestBody LogRequest request) {
 		LocalDateTime now = LocalDateTime.now();
+
+		Log log = new Log(
+			request.getTitle(),
+			request.getContent()
+		);
+
+		log.setTags(convertTags(request.getTags()));
 
 		log.setCreatedAt(now);
 		log.setUpdatedAt(now);
+		log.setTags(convertTags(request.getTags()));
+
     	repository.save(log);
 	}
 
@@ -45,15 +57,16 @@ public class LogController {
 	}
 
 	@PutMapping("/api/logs/{id}")
-	public void updateLog(@PathVariable Long id, @RequestBody Log log) {
+	public void updateLog(@PathVariable Long id, @RequestBody LogRequest request) {
 
 		Log oldLog = repository.findById(id).orElseThrow();
-		System.out.println("PUT recieved: " + id);
-	    log.setId(id);
-		log.setCreatedAt(oldLog.getCreatedAt());
-		log.setUpdatedAt(LocalDateTime.now());
 
-	    repository.save(log);
+		oldLog.setTitle(request.getTitle());
+		oldLog.setContent(request.getContent());
+		oldLog.setTags(convertTags(request.getTags()));
+		oldLog.setUpdatedAt(LocalDateTime.now());
+
+	    repository.save(oldLog);
 	}
 
 	@GetMapping("/api/logs/search")
@@ -62,5 +75,26 @@ public class LogController {
     	    keyword,
     	    keyword
     	);
+	}
+	private List<Tag> convertTags(String tagString) {
+    	List<Tag> tags = new ArrayList<>();
+
+    	if (tagString != null && !tagString.isBlank()) {
+        	String[] tagNames = tagString.split(",");
+
+        	for (String tagName : tagNames) {
+            	String trimmedName = tagName.trim();
+
+            	if (!trimmedName.isBlank()) {
+                	Tag tag = tagRepository
+                    	.findByName(trimmedName)
+                    	.orElseGet(() -> tagRepository.save(new Tag(trimmedName)));
+
+                	tags.add(tag);
+            	}
+        	}
+    	}
+
+    	return tags;
 	}
 }

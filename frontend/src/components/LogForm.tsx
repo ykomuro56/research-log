@@ -1,16 +1,22 @@
 type LogFormProps = {
   title: string;
   content: string;
+  tags: string;
+
   setTitle: (title: string) => void;
   setContent: (content: string) => void;
+  setTags: (tags: string) =>void;
+
   onSave: () => void;
 };
 
 function LogForm({
   title,
   content,
+  tags,
   setTitle,
   setContent,
+  setTags,
   onSave,
 }: LogFormProps) {
   return (
@@ -40,6 +46,18 @@ function LogForm({
           marginBottom: "10px",
         }}
       />
+
+	  <input
+	    type="text"
+	    placeholder="タグ（カンマ区切り）"
+	    value={tags}
+	    onChange={(e) => setTags(e.target.value)}
+	    style={{
+	      width: "100%",
+	      padding: "8px",
+	      marginBottom: "10px",
+	    }}
+	  />
 
       <br />
 
