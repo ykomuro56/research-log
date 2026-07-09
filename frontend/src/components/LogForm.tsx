@@ -7,6 +7,9 @@ type LogFormProps = {
   setContent: (content: string) => void;
   setTags: (tags: string) =>void;
 
+  isEditing: boolean;
+  onCancel: () => void;
+
   onSave: () => void;
 };
 
@@ -17,6 +20,8 @@ function LogForm({
   setTitle,
   setContent,
   setTags,
+  isEditing,
+  onCancel,
   onSave,
 }: LogFormProps) {
   return (
@@ -61,13 +66,15 @@ function LogForm({
 
       <br />
 
-      <button
-	    onClick={() => {
-		  onSave();
-		}}
-	  >
-        保存
+      <button onClick={onSave}>
+        {isEditing ? "更新" : "保存"}
       </button>
+	  {isEditing && (
+		<button onClick={onCancel}>
+		  キャンセル
+		</button>
+	  )}
+
     </>
   );
 }
