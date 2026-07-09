@@ -30,4 +30,15 @@ public class LogService {
 			}
 		}
 	}
+
+	public List<Log> searchLogs(String keyword, String tag) {
+		if (keyword != null && keyword.isBlank()) {
+			keyword = null;
+		}
+		if (tag != null && tag.isBlank()) {
+			tag = null;
+		}
+
+		return repository.searchLogs(keyword, tag);
+	}
 }

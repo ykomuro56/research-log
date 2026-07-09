@@ -77,13 +77,15 @@ public class LogController {
 	}
 
 	@GetMapping("/api/logs/search")
-	public List<Log> searchLogs(@RequestParam String keyword) {
-    	return repository.findByTitleContainingOrContentContainingOrTagsNameContaining(
-    	    keyword,
-    	    keyword,
-			keyword
-    	);
+	public List<Log> searchLogs(
+			@RequestParam (required = false) String keyword,
+			@RequestParam (required = false) String tag) {
+		System.out.println("keyword = " + keyword);
+		System.out.println("tag = " + tag);
+
+    	return logService.searchLogs(keyword, tag);
 	}
+
 	private List<Tag> convertTags(String tagString) {
     	List<Tag> tags = new ArrayList<>();
 

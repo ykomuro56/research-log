@@ -24,6 +24,7 @@ function App() {
 	const [tagInput, setTagInput] = useState("");
 	const [editingId, setEditingId] = useState<number | null>(null);
 	const [keyword, setKeyword] = useState("");
+	const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
 	const [logs, setLogs] = useState<Log[]>([]);
 	const [tags, setTags] = useState<Tag[]>([]);
@@ -44,11 +45,24 @@ function App() {
 	    });
 	};
 
-	const searchLogs = (searchWord: string) => {
-	  fetch(`http://localhost:8080/api/logs/search?keyword=${searchWord}`)
+	const searchLogs = (
+	  searchWord: string,
+	  selectedTag: string | null
+	  ) => {
+	    const params = new URLSearchParams();
+
+		if(searchWord) {
+		  params.append("keyword", searchWord);
+		}
+
+		if(selectedTag) {
+		  params.append("tag", selectedTag);
+		}
+
+		fetch(`http://localhost:8080/api/logs/search?${params.toString()}`)
 		.then((response) => response.json())
 		.then((data) => {
-		setLogs(data);
+		  setLogs(data);
 		});
 	};
 
@@ -58,8 +72,10 @@ function App() {
 	}, []);
 
 	const handleTagClick = (tagName: string) => {
-	  setKeyword(tagName);
-	  searchLogs(tagName);
+		const newTag = selectedTag === tagName ? null : tagName;
+
+		setSelectedTag(newTag);
+		searchLogs(keyword, newTag);
 	};
 
 	const deleteLog = (id: number) => {
@@ -83,6 +99,13 @@ function App() {
 		setTagInput(log.tags.map((tag) =>tag.name).join(", "));
 		setEditingId(log.id);
 	  }
+	};
+
+	const cancelEdit = () => {
+	  setEditingId(null);
+	  setTitle("");
+	  setContent("");
+	  setTagInput("");
 	};
 
 	const saveLog = () => {
@@ -152,16 +175,29 @@ function App() {
 
 			<TagList
 			  tags={tags}
-			  selectedTag={keyword}
+			  selectedTag={selectedTag}
 			  onTagClick={handleTagClick}
 			/>
 
-			<input
-			  value={keyword}
-			  onChange={(e) => setKeyword(e.target.value)}
-			/>
+			<div className="search-box">	
+			  <input
+				value={keyword}
+				onChange={(e) => setKeyword(e.target.value)}
+			  />
 
-			<button onClick={() => searchLogs(keyword)}>
+			  {(keyword) && (
+				<button
+				  onClick={() => {
+				    setKeyword("");
+					fetchLogs();
+				  }}
+				>
+				  ×
+				</button>
+			  )}
+			</div>
+
+			<button onClick={() => searchLogs(keyword, selectedTag)}>
 			  検索
 			</button>
 
@@ -173,6 +209,8 @@ function App() {
 			  setContent={setContent}
 			  onSave={saveLog}
 			  setTags={setTagInput}
+			  isEditing={editingId !== null}
+			  onCancel={cancelEdit}
 			/>
 
 			<LogList

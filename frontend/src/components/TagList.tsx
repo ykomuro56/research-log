@@ -32,7 +32,6 @@ function TagList({ tags, selectedTag, onTagClick }: TagListProps) {
 		  
         ))}
       </div>
-	  <h2>選択中: {selectedTag}</h2>
     </>
   );
 }
