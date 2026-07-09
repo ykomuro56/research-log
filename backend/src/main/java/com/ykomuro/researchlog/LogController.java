@@ -20,12 +20,19 @@ import com.ykomuro.researchlog.LogRepository;
 @CrossOrigin(origins = "http://localhost:5173")
 public class LogController {
 
+
 	private final LogRepository repository;
 	private final TagRepository tagRepository;
+	private final LogService logService;
 
-	public LogController(LogRepository repository, TagRepository tagRepository) {
+	public LogController(
+		LogRepository repository,
+		TagRepository tagRepository,
+		LogService logService
+		) {
 		this.repository = repository;
 		this.tagRepository = tagRepository;
+		this.logService = logService;
 	}
 
 	@GetMapping("/api/logs")
@@ -53,7 +60,7 @@ public class LogController {
 
 	@DeleteMapping("/api/logs/{id}")
 	public void deleteLog(@PathVariable Long id) {
-	    repository.deleteById(id);
+		logService.deleteLog(id);
 	}
 
 	@PutMapping("/api/logs/{id}")
@@ -71,9 +78,10 @@ public class LogController {
 
 	@GetMapping("/api/logs/search")
 	public List<Log> searchLogs(@RequestParam String keyword) {
-    	return repository.findByTitleContainingOrContentContaining(
+    	return repository.findByTitleContainingOrContentContainingOrTagsNameContaining(
     	    keyword,
-    	    keyword
+    	    keyword,
+			keyword
     	);
 	}
 	private List<Tag> convertTags(String tagString) {
