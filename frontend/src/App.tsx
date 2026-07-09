@@ -1,17 +1,32 @@
 import LogForm from "./components/LogForm";
 import LogList from "./components/LogList";
+import TagList from "./components/TagList";
 import { useState, useEffect } from "react";
 import "./App.css";
+
+type Tag = {
+  id: number;
+  name: string;
+};
+
+type Log = {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  tags: Tag[];
+};
 
 function App() {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
+	const [tagInput, setTagInput] = useState("");
 	const [editingId, setEditingId] = useState<number | null>(null);
 	const [keyword, setKeyword] = useState("");
 
-	const [logs, setLogs] = useState<
-	{ id: number; title: string; content: string; createdAt: string; }[]
-	>([]);
+	const [logs, setLogs] = useState<Log[]>([]);
+	const [tags, setTags] = useState<Tag[]>([]);
 
 	const fetchLogs = () => {
 	  fetch("http://localhost:8080/api/logs")
@@ -21,17 +36,31 @@ function App() {
 	    });
 	};
 
-	const searchLogs = () => {
-		 fetch(`http://localhost:8080/api/logs/search?keyword=${keyword}`)
-		 .then((response) => response.json())
-		 .then((data) => {
-		 setLogs(data);
-		 });
+	const fetchTags = () => {
+	  fetch("http://localhost:8080/api/tags")
+	    .then((response) => response.json())
+	    .then((data) => {
+	      setTags(data);
+	    });
+	};
+
+	const searchLogs = (searchWord: string) => {
+	  fetch(`http://localhost:8080/api/logs/search?keyword=${searchWord}`)
+		.then((response) => response.json())
+		.then((data) => {
+		setLogs(data);
+		});
 	};
 
 	useEffect(() => {
 		fetchLogs();
+		fetchTags();
 	}, []);
+
+	const handleTagClick = (tagName: string) => {
+	  setKeyword(tagName);
+	  searchLogs(tagName);
+	};
 
 	const deleteLog = (id: number) => {
 	  fetch(
@@ -41,17 +70,17 @@ function App() {
 		}
 	  ).then(() => {
 	    fetchLogs();
+		fetchTags();
 	  });
 	};
 
 	const editLog = (id: number) => {
-	  console.log("edit", id);
-
 	  const log = logs.find((log) => log.id === id);
 
 	  if (log) {
 		setTitle(log.title);
 		setContent(log.content);
+		setTagInput(log.tags.map((tag) =>tag.name).join(", "));
 		setEditingId(log.id);
 	  }
 	};
@@ -69,6 +98,7 @@ function App() {
 	    body: JSON.stringify({
 	      title,
 	      content,
+		  tags: tagInput,
 	    }),
 	  })
 		.then((response) => {
@@ -78,8 +108,10 @@ function App() {
 			
 		.then(() => {
 			fetchLogs();
+			fetchTags();
 			setTitle("");
 	    	setContent("");
+			setTagInput("");
 			setEditingId(null);
 		})
 		.catch((err) => {
@@ -94,6 +126,7 @@ function App() {
 	    body: JSON.stringify({
 	      title,
 	      content,
+		  tags: tagInput,
 	    }),
 	  })
 		.then((response) => {
@@ -105,6 +138,7 @@ function App() {
 			fetchLogs();
 			setTitle("");
 	    	setContent("");
+			setTagInput("");
 			setEditingId(null);
 		})
 		.catch((err) => {
@@ -115,32 +149,41 @@ function App() {
 	return (
 			<div style={{ maxWidth: "800px", margin: "40px auto" }}>
 			<h1>Research Log</h1>
-<input
-  value={keyword}
-  onChange={(e) => setKeyword(e.target.value)}
-/>
 
-<button onClick={searchLogs}>
-  Search
-</button>
+			<TagList
+			  tags={tags}
+			  selectedTag={keyword}
+			  onTagClick={handleTagClick}
+			/>
 
-<LogForm
-  title={title}
-  content={content}
-  setTitle={setTitle}
-  setContent={setContent}
-  onSave={saveLog}
-/>
+			<input
+			  value={keyword}
+			  onChange={(e) => setKeyword(e.target.value)}
+			/>
 
-<LogList
-  logs={logs}
-  onDelete={deleteLog}
-  onEdit={editLog}
-/>
+			<button onClick={() => searchLogs(keyword)}>
+			  検索
+			</button>
+
+			<LogForm
+			  title={title}
+			  content={content}
+			  tags={tagInput}
+			  setTitle={setTitle}
+			  setContent={setContent}
+			  onSave={saveLog}
+			  setTags={setTagInput}
+			/>
+
+			<LogList
+			  logs={logs}
+			  onDelete={deleteLog}
+			  onEdit={editLog}
+			/>
 
 
-</div>
-);
+			</div>
+		);
 }
 
 export default App;
