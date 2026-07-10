@@ -1,3 +1,6 @@
+import "./LogForm.css";
+import { FiLink } from "react-icons/fi";
+
 type LogFormProps = {
   title: string;
   content: string;
@@ -5,11 +8,10 @@ type LogFormProps = {
 
   setTitle: (title: string) => void;
   setContent: (content: string) => void;
-  setTags: (tags: string) =>void;
+  setTags: (tags: string) => void;
 
   isEditing: boolean;
   onCancel: () => void;
-
   onSave: () => void;
 };
 
@@ -23,59 +25,132 @@ function LogForm({
   isEditing,
   onCancel,
   onSave,
+  isOpen,
 }: LogFormProps) {
   return (
-    <>
-      <h2>新しい記録</h2>
+//    if(!isOpen) return null;
+    <div className="editor-card">
 
-      <input
-        type="text"
-        placeholder="タイトル"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "8px",
-          marginBottom: "10px",
-        }}
-      />
+      <div className="editor-header">
+        <h2>
+          {isEditing ? "✏ Editing Log" : "📝 New Research Log"}
+        </h2>
+      </div>
 
-      <textarea
-        placeholder="内容"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows={8}
-        style={{
-          width: "100%",
-          padding: "8px",
-          marginBottom: "10px",
-        }}
-      />
+      <div className="editor-body">
 
-	  <input
-	    type="text"
-	    placeholder="タグ（カンマ区切り）"
-	    value={tags}
-	    onChange={(e) => setTags(e.target.value)}
-	    style={{
-	      width: "100%",
-	      padding: "8px",
-	      marginBottom: "10px",
-	    }}
-	  />
+        <div className="form-group">
+          <label>タイトル</label>
 
-      <br />
+          <input
+            className="log-input"
+            type="text"
+            placeholder="タイトル"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
 
-      <button onClick={onSave}>
-        {isEditing ? "更新" : "保存"}
-      </button>
-	  {isEditing && (
-		<button onClick={onCancel}>
-		  キャンセル
-		</button>
-	  )}
+        <div className="form-group">
+          <label>コンテンツ</label>
 
-    </>
+          <div className="editor">
+
+            <div className="editor-toolbar">
+
+              <button
+                type="button"
+                className="toolbar-button"
+                disabled
+                title="Bold（今後実装）"
+              >
+                B
+              </button>
+
+              <button
+                type="button"
+                className="toolbar-button"
+                disabled
+                title="Italic（今後実装）"
+              >
+                I
+              </button>
+
+              <button
+                type="button"
+                className="toolbar-button"
+                title="リンク追加（今後実装）"
+              >
+                <FiLink />
+              </button>
+
+              <button
+                type="button"
+                className="toolbar-button"
+                disabled
+                title="Code Block（今後実装）"
+              >
+                {"</>"}
+              </button>
+
+              <button
+                type="button"
+                className="toolbar-button"
+                disabled
+                title="List（今後実装）"
+              >
+                •
+              </button>
+
+            </div>
+
+            <textarea
+              className="log-textarea"
+              placeholder="研究内容を記録..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={12}
+            />
+
+          </div>
+
+        </div>
+
+        <div className="form-group">
+          <label>タグ</label>
+
+          <input
+            className="log-input"
+            type="text"
+            placeholder="解析、データ取得、エラー処理..."
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
+        </div>
+
+        <div className="form-actions">
+
+          {isEditing && (
+            <button
+              className="cancel-button"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+          )}
+
+          <button
+            className="save-button"
+            onClick={onSave}
+          >
+            {isEditing ? "更新" : "保存"}
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
   );
 }
 

@@ -1,0 +1,152 @@
+.log-item {
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: white;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.log-item:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.log-tags {
+    margin-bottom: 8px;
+}
+
+.log-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    background: #f5f5f5;
+}
+
+.log-content {
+    white-space: pre-wrap;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.log-content.collapsed {
+	display: -webkit-box;
+	-webkit-line-clamp: 5;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.log-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.edit-button {
+    background: #3b82f6;
+    color: white;
+}
+
+.edit-button:hover {
+    background: #2563eb;
+}
+
+.delete-button {
+    background: #ef4444;
+    color: white;
+}
+
+.delete-button:hover {
+    background: #dc2626;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.log-tools {
+    display: flex;
+    gap: 4px;
+}
+
+.log-dates {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	margin-top: 12px;
+}
+
+.log-date{
+	font-size: 0.8rem;
+	color: #777;
+}
+
+.icon-button {
+    background: transparent;
+    border: none;
+    color: #777;
+    cursor: pointer;
+
+    padding: 6px;
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background .15s, color .15s;
+}
+
+.icon-button:hover {
+    background: #f3f4f6;
+    color: #333;
+}
+
+.menu {
+    position: absolute;
+
+    top: 36px;
+    right: 0;
+
+    background: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
+
+    min-width: 100px;
+}
+
+.menu button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    padding: 8px 12px;
+
+    background: transparent;
+    border: none;
+
+    font-size: 0.9rem;
+    color: #555;
+
+    cursor: pointer;
+    text-align: left;
+}
+
+.log-header {
+    position: relative;
+}

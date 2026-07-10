@@ -1,0 +1,202 @@
+.editor-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+
+    margin: 32px 0;
+    overflow: hidden;
+}
+
+.editor-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #ececec;
+}
+
+.editor-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.editor-body {
+    padding: 24px;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    color: #666;
+}
+
+/* ---------- Title ---------- */
+
+.log-input {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    font-size: 1rem;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    box-sizing: border-box;
+
+    transition: .2s;
+}
+
+.log-input:focus {
+    outline: none;
+
+    border-color: #5b8cff;
+
+    box-shadow: 0 0 0 3px rgba(91,140,255,.15);
+}
+
+/* ---------- Editor ---------- */
+
+.editor {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    transition: .2s;
+}
+
+.editor:focus-within {
+    border-color: #5b8cff;
+
+    box-shadow: 0 0 0 3px rgba(91,140,255,.15);
+}
+
+/* ---------- Toolbar ---------- */
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 8px 10px;
+
+    background: #f8f9fb;
+
+    border-bottom: 1px solid #ececec;
+}
+
+.toolbar-button {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: .95rem;
+
+    transition: .15s;
+}
+
+.toolbar-button:hover {
+    background: #eceff4;
+}
+
+.toolbar-button:disabled {
+    opacity: .45;
+    cursor: default;
+}
+
+.toolbar-button:disabled:hover {
+    background: transparent;
+}
+
+/* ---------- Textarea ---------- */
+
+.log-textarea {
+    width: 100%;
+
+    min-height: 280px;
+
+    padding: 18px;
+
+    border: none;
+    outline: none;
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+    font-size: 1rem;
+    line-height: 1.8;
+
+    font-family: inherit;
+}
+
+/* ---------- Buttons ---------- */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    margin-top: 32px;
+}
+
+.cancel-button {
+    border: 1px solid #ddd;
+
+    background: white;
+
+    color: #555;
+
+    padding: 10px 18px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.cancel-button:hover {
+    background: #f5f5f5;
+}
+
+.save-button {
+    border: none;
+
+    background: #3b82f6;
+
+    color: white;
+
+    padding: 10px 20px;
+
+    border-radius: 10px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.save-button:hover {
+    background: #2563eb;
+}
+
+.save-button:active {
+    transform: scale(.98);
+}

@@ -7,32 +7,33 @@ type Tag = {
 
 type TagListProps = {
   tags: Tag[];
-  selectedTag: string;
+  selectedTag: string | null;
   onTagClick: (tagName: string) =>void;
 };
 
 function TagList({ tags, selectedTag, onTagClick }: TagListProps) {
   return (
-    <>
+    <div>
       <h2>タグ一覧</h2>
 
-      <div className="tag-List">
-        {tags.map((tag) => (
+      <div className="tag-list">
+        {tags.map((tag) => {
+		  const selected =selectedTag === tag.name;
+
+		  return(
           <button
 		    key={tag.id}
 			className={
-			  selectedTag === tag.name
-			    ? "tag-button active"
-				: "tag-button"
+			`tag-button ${selected ? "selected" : ""}`
 			}
 			onClick={() => onTagClick(tag.name)}
 		  >
 			  {tag.name}
 		  </button>
-		  
-        ))}
+		  );
+        })}
       </div>
-    </>
+    </div>
   );
 }
 

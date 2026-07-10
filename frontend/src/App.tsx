@@ -1,7 +1,8 @@
 import LogForm from "./components/LogForm";
 import LogList from "./components/LogList";
 import TagList from "./components/TagList";
-import { useState, useEffect } from "react";
+import logo from "./assets/research_log_logo_transparent.png"
+import { useState, useEffect, useRef } from "react";
 import "./App.css";
 
 type Tag = {
@@ -25,9 +26,12 @@ function App() {
 	const [editingId, setEditingId] = useState<number | null>(null);
 	const [keyword, setKeyword] = useState("");
 	const [selectedTag, setSelectedTag] = useState<string | null>(null);
+	const [isFormOpen, setIsFormOpen] = useState(false);
 
 	const [logs, setLogs] = useState<Log[]>([]);
 	const [tags, setTags] = useState<Tag[]>([]);
+
+	const formRef = useRef<HTMLDivElement>(null);
 
 	const fetchLogs = () => {
 	  fetch("http://localhost:8080/api/logs")
@@ -93,12 +97,20 @@ function App() {
 	const editLog = (id: number) => {
 	  const log = logs.find((log) => log.id === id);
 
-	  if (log) {
-		setTitle(log.title);
-		setContent(log.content);
-		setTagInput(log.tags.map((tag) =>tag.name).join(", "));
-		setEditingId(log.id);
-	  }
+	  if (!log) return;
+	  
+	  setTitle(log.title);
+	  setContent(log.content);
+	  setTagInput(log.tags.map((tag) =>tag.name).join(", "));
+	  setEditingId(log.id);
+	  setIsFormOpen(true);
+	  
+	  requestAnimationFrame(() => {
+		formRef.current?.scrollIntoView({
+			behavior: "smooth",
+			block: "start",
+		});
+	  });
 	};
 
 	const cancelEdit = () => {
@@ -106,6 +118,7 @@ function App() {
 	  setTitle("");
 	  setContent("");
 	  setTagInput("");
+	  setIsFormOpen(false);
 	};
 
 	const saveLog = () => {
@@ -136,6 +149,7 @@ function App() {
 	    	setContent("");
 			setTagInput("");
 			setEditingId(null);
+			setIsFormOpen(false);
 		})
 		.catch((err) => {
 		    console.error(err);
@@ -163,6 +177,7 @@ function App() {
 	    	setContent("");
 			setTagInput("");
 			setEditingId(null);
+			setIsFormOpen(false);
 		})
 		.catch((err) => {
 		    console.error(err);
@@ -171,53 +186,109 @@ function App() {
 	};
 	return (
 			<div style={{ maxWidth: "800px", margin: "40px auto" }}>
-			<h1>Research Log</h1>
+				<div className="hero">
+					<img
+						src={logo}
+						alt="Reseach Log Logo"
+						className="hero-logo"
+					/>
 
-			<TagList
-			  tags={tags}
-			  selectedTag={selectedTag}
-			  onTagClick={handleTagClick}
-			/>
+					<p className="hero-subtitle">
+						Record. Organize. Discover.
+					</p>
+					<div className="hero-stats">
+						<div className="stat-card">
+							<strong>📃{logs.length}</strong>
+							<span>Logs</span>
+						</div>
 
-			<div className="search-box">	
-			  <input
-				value={keyword}
-				onChange={(e) => setKeyword(e.target.value)}
-			  />
+						<div className="stat-card">
+							<strong>🏷️{tags.length}</strong>
+							<span>Tags</span>
+						</div>
+					</div>
+				</div>
 
-			  {(keyword) && (
-				<button
-				  onClick={() => {
-				    setKeyword("");
-					fetchLogs();
-				  }}
-				>
-				  ×
-				</button>
-			  )}
-			</div>
+				<div className="page-header">
 
-			<button onClick={() => searchLogs(keyword, selectedTag)}>
-			  検索
-			</button>
+					<h2>Logs</h2>
 
-			<LogForm
-			  title={title}
-			  content={content}
-			  tags={tagInput}
-			  setTitle={setTitle}
-			  setContent={setContent}
-			  onSave={saveLog}
-			  setTags={setTagInput}
-			  isEditing={editingId !== null}
-			  onCancel={cancelEdit}
-			/>
+					<button
+						className="new-log-button"
+						onClick={() => {
+							setIsFormOpen(true);
+							setEditingId(null);
+							setTitle("");
+							setContent("");
+							setTagInput("");
+							requestAnimationFrame(() => {
+								formRef.current?.scrollIntoView({
+									behavior:"smooth",
+									block:"start",
+								});
+							});
+						}}
+					>
+						+ Create Log
+					</button>
 
-			<LogList
-			  logs={logs}
-			  onDelete={deleteLog}
-			  onEdit={editLog}
-			/>
+				</div>
+
+				{isFormOpen && (
+				  <div
+				    ref={formRef}
+					className="log-form-container"
+				  >
+					<LogForm
+					  title={title}
+					  content={content}
+					  tags={tagInput}
+					  setTitle={setTitle}
+					  setContent={setContent}
+					  onSave={saveLog}
+					  setTags={setTagInput}
+					  isEditing={editingId !== null}
+					  onCancel={cancelEdit}
+					/>
+				  </div>
+				)}
+
+				<TagList
+				  tags={tags}
+				  selectedTag={selectedTag}
+				  onTagClick={handleTagClick}
+				/>
+
+				<div className="search-area">
+					<div className="search-box">
+					  <input
+						placeholder="タイトル・本文・タグを検索..."
+						value={keyword}
+						onChange={(e) => setKeyword(e.target.value)}
+					  />
+
+					  {(keyword) && (
+						<button
+						  className="clear-button"
+						  onClick={() => {
+							setKeyword("");
+							fetchLogs();
+						  }}
+						>
+						  ×
+						</button>
+					  )}
+					</div>
+				  <button onClick={() => searchLogs(keyword, selectedTag)}>
+					検索
+				  </button>
+				</div>
+
+				<LogList
+				  logs={logs}
+				  onDelete={deleteLog}
+				  onEdit={editLog}
+				/>
 
 
 			</div>
