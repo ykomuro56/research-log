@@ -149,6 +149,7 @@ PostgreSQLを起動し、`application.properties` の設定に合わせてデー
 具体的には、
 
 - 要件定義や機能設計の壁打ち
+- ロゴの生成
 - UI/UXの改善案の検討
 - リファクタリング方針の相談
 - React・Spring Bootなど、初めて触れる領域の学習
