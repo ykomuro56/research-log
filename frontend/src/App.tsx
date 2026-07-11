@@ -4,6 +4,7 @@ import TagList from "./components/TagList";
 import logo from "./assets/research_log_logo_transparent.png"
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
+import "./common.css"
 
 type Tag = {
   id: number;
@@ -27,6 +28,7 @@ function App() {
 	const [keyword, setKeyword] = useState("");
 	const [selectedTag, setSelectedTag] = useState<string | null>(null);
 	const [isFormOpen, setIsFormOpen] = useState(false);
+	const [shouldRenderForm, setShouldRenderForm] = useState(false);
 
 	const [logs, setLogs] = useState<Log[]>([]);
 	const [tags, setTags] = useState<Tag[]>([]);
@@ -103,9 +105,10 @@ function App() {
 	  setContent(log.content);
 	  setTagInput(log.tags.map((tag) =>tag.name).join(", "));
 	  setEditingId(log.id);
-	  setIsFormOpen(true);
+	  setShouldRenderForm(true);
 	  
 	  requestAnimationFrame(() => {
+	    setIsFormOpen(true);
 		formRef.current?.scrollIntoView({
 			behavior: "smooth",
 			block: "start",
@@ -211,17 +214,16 @@ function App() {
 
 				<div className="page-header">
 
-					<h2>Logs</h2>
-
 					<button
-						className="new-log-button"
+						className="new-log-button button"
 						onClick={() => {
-							setIsFormOpen(true);
 							setEditingId(null);
 							setTitle("");
 							setContent("");
 							setTagInput("");
+							setShouldRenderForm(true);
 							requestAnimationFrame(() => {
+								setIsFormOpen(true);
 								formRef.current?.scrollIntoView({
 									behavior:"smooth",
 									block:"start",
@@ -229,15 +231,22 @@ function App() {
 							});
 						}}
 					>
-						+ Create Log
+						+ 新規作成
 					</button>
 
 				</div>
 
-				{isFormOpen && (
+				{shouldRenderForm && (
 				  <div
 				    ref={formRef}
-					className="log-form-container"
+				    className={`log-form-container ${
+				      isFormOpen ? "open" : "closed"
+				    }`}
+					onTransitionEnd={() => {
+						if (!isFormOpen) {
+							setShouldRenderForm(false);
+						}
+					}}
 				  >
 					<LogForm
 					  title={title}
@@ -262,6 +271,7 @@ function App() {
 				<div className="search-area">
 					<div className="search-box">
 					  <input
+						className="input"
 						placeholder="タイトル・本文・タグを検索..."
 						value={keyword}
 						onChange={(e) => setKeyword(e.target.value)}
@@ -279,7 +289,9 @@ function App() {
 						</button>
 					  )}
 					</div>
-				  <button onClick={() => searchLogs(keyword, selectedTag)}>
+				  <button 
+					className="search-button button"
+				    onClick={() => searchLogs(keyword, selectedTag)}>
 					検索
 				  </button>
 				</div>

@@ -1,0 +1,36 @@
+.button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+
+    font-family:
+        Inter,
+        "SF Pro Display",
+        system-ui,
+        sans-serif;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.input {
+    padding: 10px 36px 10px 12px;
+
+    font-family:
+        Inter,
+        "SF Pro Display",
+        system-ui,
+        sans-serif;
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    outline: none;
+}

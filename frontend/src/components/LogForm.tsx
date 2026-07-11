@@ -1,4 +1,5 @@
 import "./LogForm.css";
+import "./../common.css";
 import { FiLink } from "react-icons/fi";
 
 type LogFormProps = {
@@ -130,17 +131,15 @@ function LogForm({
 
         <div className="form-actions">
 
-          {isEditing && (
-            <button
-              className="cancel-button"
-              onClick={onCancel}
-            >
-              Cancel
-            </button>
-          )}
+          <button
+            className="cancel-button button"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
 
           <button
-            className="save-button"
+            className="save-button button"
             onClick={onSave}
           >
             {isEditing ? "更新" : "保存"}
