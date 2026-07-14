@@ -1,6 +1,6 @@
 import "./LogForm.css";
 import "./../common.css";
-import { FiLink } from "react-icons/fi";
+import { FiLink, FiItalic } from "react-icons/fi";
 import { useRef } from "react";
 
 type LogFormProps = {
@@ -75,6 +75,148 @@ function LogForm({
       );
     });
   };
+  const wrapSelectedText = (
+    before: string,
+    after: string,
+    placeholder: string
+  ) => {
+    const textarea = contentTextAreaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    const selectionStart = textarea.selectionStart;
+    const selectionEnd = textarea.selectionEnd;
+    const selectedText = content.slice(selectionStart, selectionEnd);
+
+    const insertedText =
+      before + (selectedText || placeholder) + after;
+
+    const newContent =
+      content.slice(0, selectionStart) +
+      insertedText +
+      content.slice(selectionEnd);
+
+    setContent(newContent);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+
+      if (selectedText) {
+        const cursorPosition =
+          selectionStart + insertedText.length;
+
+        textarea.setSelectionRange(
+          cursorPosition,
+          cursorPosition
+        );
+      } else {
+        const placeholderStart =
+          selectionStart + before.length;
+
+        const placeholderEnd =
+          placeholderStart + placeholder.length;
+
+        textarea.setSelectionRange(
+          placeholderStart,
+          placeholderEnd
+        );
+      }
+    });
+  };
+  const handleInsertCodeBlock = () => {
+    const textarea = contentTextAreaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    const selectionStart = textarea.selectionStart;
+    const selectionEnd = textarea.selectionEnd;
+    const selectedText = content.slice(selectionStart, selectionEnd);
+
+    const code = selectedText || "コードを入力";
+    const codeBlock = `\n\`\`\`\n${code}\n\`\`\`\n`;
+
+    const newContent =
+      content.slice(0, selectionStart) +
+      codeBlock +
+      content.slice(selectionEnd);
+
+    setContent(newContent);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+
+      if (selectedText) {
+        const cursorPosition = selectionStart + codeBlock.length;
+
+        textarea.setSelectionRange(
+          cursorPosition,
+          cursorPosition
+        );
+      } else {
+        const placeholderStart =
+          selectionStart + "\n```\n".length;
+
+        const placeholderEnd =
+          placeholderStart + "コードを入力".length;
+
+        textarea.setSelectionRange(
+          placeholderStart,
+          placeholderEnd
+        );
+      }
+    });
+  };
+  const handleInsertList = () => {
+    const textarea = contentTextAreaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    const selectionStart = textarea.selectionStart;
+    const selectionEnd = textarea.selectionEnd;
+    const selectedText = content.slice(selectionStart, selectionEnd);
+
+    const listText = selectedText
+      ? selectedText
+          .split("\n")
+          .map((line) => `- ${line}`)
+          .join("\n")
+      : "- リスト項目";
+
+    const newContent =
+      content.slice(0, selectionStart) +
+      listText +
+      content.slice(selectionEnd);
+
+    setContent(newContent);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+
+      if (selectedText) {
+        const cursorPosition = selectionStart + listText.length;
+
+        textarea.setSelectionRange(
+          cursorPosition,
+          cursorPosition
+        );
+      } else {
+        const placeholderStart = selectionStart + "- ".length;
+        const placeholderEnd =
+          placeholderStart + "リスト項目".length;
+
+        textarea.setSelectionRange(
+          placeholderStart,
+          placeholderEnd
+        );
+      }
+    });
+  };
   return (
 //    if(!isOpen) return null;
     <div className="editor-card">
@@ -109,19 +251,19 @@ function LogForm({
               <button
                 type="button"
                 className="toolbar-button"
-                disabled
-                title="Bold（今後実装）"
+                title="太字"
+                onClick={() => wrapSelectedText("**", "**", "太字")}
               >
-                B
+                <strong>B</strong>
               </button>
 
               <button
                 type="button"
                 className="toolbar-button"
-                disabled
-                title="Italic（今後実装）"
+                title="斜体"
+                onClick={() => wrapSelectedText("*", "*", "斜体")}
               >
-                I
+                <FiItalic />
               </button>
 
               <button
@@ -136,8 +278,9 @@ function LogForm({
               <button
                 type="button"
                 className="toolbar-button"
-                disabled
-                title="Code Block（今後実装）"
+                title="コードブロック"
+                aria-label="コードブロック"
+                onClick={handleInsertCodeBlock}
               >
                 {"</>"}
               </button>
@@ -145,10 +288,21 @@ function LogForm({
               <button
                 type="button"
                 className="toolbar-button"
-                disabled
-                title="List（今後実装）"
+                title="箇条書き"
+                aria-label="箇条書き"
+                onClick={handleInsertList}
               >
                 •
+              </button>
+
+			  <button
+                type="button"
+                className="toolbar-button"
+                title="インラインコード"
+                aria-label="インラインコード"
+                onClick={() => wrapSelectedText("`", "`", "コード")}
+              >
+                {"<>"}
               </button>
 
             </div>

@@ -2,11 +2,18 @@ import "./LogList.css"
 import LogItem from "./LogItem";
 import { useState } from "react";
 
+type Tag = {
+  id: number;
+  name: string;
+};
+
 type Log = {
   id: number;
   title: string;
   content: string;
   createdAt: string;
+  updatedAt: string;
+  tags: Tag[];
 };
 
 type LogListProps = {

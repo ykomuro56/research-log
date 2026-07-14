@@ -1,155 +1,191 @@
+/* ==============================
+   Log card
+============================== */
+
 .log-item {
-	cursor: pointer;
-	display: flex;
-	flex-direction: column;
-    border: 1px solid #ccc;
-    padding: 12px;
-    margin-bottom: 12px;
-    background: white;
-	border-radius: 12px;
-	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-	transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 12px;
+  margin-bottom: 12px;
+
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
 }
 
 .log-item:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.log-tags {
-    margin-bottom: 8px;
-}
 
-.log-tag {
-    display: inline-block;
-    padding: 2px 8px;
-    margin-right: 6px;
-    margin-bottom: 6px;
-    border: 1px solid #ccc;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    background: #f5f5f5;
-}
-
-.log-content {
-    white-space: pre-wrap;
-    line-height: 1.6;
-    text-align: left;
-}
-
-.log-content.collapsed {
-	display: -webkit-box;
-	-webkit-line-clamp: 5;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-}
-
-.log-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 16px;
-}
-
-.edit-button {
-    background: #3b82f6;
-    color: white;
-}
-
-.edit-button:hover {
-    background: #2563eb;
-}
-
-.delete-button {
-    background: #ef4444;
-    color: white;
-}
-
-.delete-button:hover {
-    background: #dc2626;
-}
+/* ==============================
+   Header
+============================== */
 
 .log-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .log-tools {
-    display: flex;
-    gap: 4px;
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
 }
+
+
+/* ==============================
+   Tags
+============================== */
+
+.log-tags {
+  margin-bottom: 8px;
+}
+
+.log-tag {
+  display: inline-block;
+
+  padding: 2px 8px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+
+  font-size: 0.8rem;
+}
+
+
+/* ==============================
+   Content
+============================== */
+
+.log-content {
+  line-height: 1.7;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.log-content.collapsed {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+
+  overflow: hidden;
+}
+
+
+/* ==============================
+   Dates
+============================== */
 
 .log-dates {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 
-	margin-top: 12px;
+  margin-top: 12px;
 }
 
-.log-date{
-	font-size: 0.8rem;
-	color: #777;
+.log-date {
+  color: #777;
+  font-size: 0.8rem;
 }
+
+
+/* ==============================
+   Icon button
+============================== */
 
 .icon-button {
-    background: transparent;
-    border: none;
-    color: #777;
-    cursor: pointer;
+  cursor: pointer;
 
-    padding: 6px;
-    border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  padding: 6px;
 
-    transition: background .15s, color .15s;
+  color: #777;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .icon-button:hover {
-    background: #f3f4f6;
-    color: #333;
+  color: #333;
+  background: #f3f4f6;
 }
 
+
+/* ==============================
+   Action menu
+============================== */
+
 .menu {
-    position: absolute;
+  position: absolute;
+  top: 36px;
+  right: 0;
+  z-index: 10;
 
-    top: 36px;
-    right: 0;
+  min-width: 110px;
 
-    background: white;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
 
-    border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 
-    box-shadow: 0 8px 20px rgba(0,0,0,.12);
-
-    min-width: 100px;
+  overflow: hidden;
 }
 
 .menu button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  cursor: pointer;
 
-    width: 100%;
-    padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
-    background: transparent;
-    border: none;
+  width: 100%;
+  padding: 8px 12px;
 
-    font-size: 0.9rem;
-    color: #555;
+  color: #555;
+  background: transparent;
+  border: none;
 
-    cursor: pointer;
-    text-align: left;
+  font-size: 0.9rem;
+  text-align: left;
 }
 
-.log-header {
-    position: relative;
+.menu button:hover {
+  color: #222;
+  background: #f3f4f6;
 }
+
+
+/* ==============================
+   Markdown
+============================== */
 
 .markdown-content {
   line-height: 1.7;
@@ -170,25 +206,194 @@
   margin: 1.2rem 0 0.6rem;
 }
 
+.markdown-content h1:first-child,
+.markdown-content h2:first-child,
+.markdown-content h3:first-child {
+  margin-top: 0;
+}
+
 .markdown-content ul,
 .markdown-content ol {
   padding-left: 1.5rem;
 }
 
 .markdown-content a {
+  color: #2563eb;
   text-decoration: underline;
 }
 
+.markdown-content strong {
+  color: #1f2937;
+  font-weight: 800;
+}
+
+.markdown-content em {
+  color: #475569;
+  font-style: oblique 12deg;
+  font-synthesis: style;
+}
+
 .markdown-content code {
-  font-family: monospace;
+  font-family:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
 }
 
 .markdown-content pre {
-  overflow-x: auto;
+  margin: 1rem 0;
   padding: 1rem;
+
+  background: #1f2937;
   border-radius: 8px;
+
+  overflow-x: auto;
 }
 
 .markdown-content pre code {
+  display: block;
+
+  padding: 0;
+
+  color: #f9fafb;
+  background: none;
+
   white-space: pre;
+}
+
+.markdown-content :not(pre) > code {
+  padding: 0.15rem 0.35rem;
+
+  background: #e5e7eb;
+  border-radius: 4px;
+}
+
+
+/* ==============================
+   Expanded log modal
+============================== */
+
+.log-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+
+  animation: overlay-fade-in 0.2s ease-out;
+}
+
+.log-modal {
+  position: relative;
+
+  width: min(760px, 100%);
+  max-height: min(85vh, 900px);
+  padding: 24px;
+
+  background: white;
+  border-radius: 16px;
+
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+
+  overflow-y: auto;
+
+  animation: log-modal-expand 0.22s ease-out;
+
+  cursor: default;
+}
+
+.log-modal .log-content {
+  overflow: visible;
+}
+
+.log-modal-close {
+  cursor: pointer;
+
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+
+  color: #64748b;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+}
+
+.log-modal-close:hover {
+  color: #1e293b;
+  background: #e2e8f0;
+}
+
+.log-modal-header {
+  padding-right: 48px;
+  margin-bottom: 12px;
+}
+
+.log-modal .log-tags {
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes log-modal-expand {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
+/* ==============================
+   Mobile
+============================== */
+
+@media (max-width: 600px) {
+  .log-modal-overlay {
+    padding: 12px;
+  }
+
+  .log-modal {
+    max-height: 90vh;
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+
+  .log-dates {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
 }
