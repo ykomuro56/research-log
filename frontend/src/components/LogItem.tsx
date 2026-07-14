@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { FiEdit2, FiMoreVertical, FiTrash2 } from "react-icons/fi"
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./LogItem.css";
 
 type Tag = {
@@ -105,11 +107,13 @@ function LogItem({
 	  <p
 		className={
 		  isOpen
-			? "log-content"
-			: "log-content collapsed"
+			? "log-content markdown-content"
+			: "log-content collapsed markdown-content"
 		}
 	  >
-		{log.content}
+	    <ReactMarkdown remarkPlagins={[remarkGfm]}>
+		  {log.content}
+		</ReactMarkdown>
 	  </p>
 
 	  <div className="log-dates">

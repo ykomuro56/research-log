@@ -150,3 +150,45 @@
 .log-header {
     position: relative;
 }
+
+.markdown-content {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.markdown-content p {
+  margin: 0 0 0.8rem;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  margin: 1.2rem 0 0.6rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5rem;
+}
+
+.markdown-content a {
+  text-decoration: underline;
+}
+
+.markdown-content code {
+  font-family: monospace;
+}
+
+.markdown-content pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.markdown-content pre code {
+  white-space: pre;
+}
