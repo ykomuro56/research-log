@@ -1,6 +1,7 @@
 import "./LogForm.css";
 import "./../common.css";
 import { FiLink } from "react-icons/fi";
+import { useRef } from "react";
 
 type LogFormProps = {
   title: string;
@@ -26,8 +27,54 @@ function LogForm({
   isEditing,
   onCancel,
   onSave,
-  isOpen,
+//  isOpen,
 }: LogFormProps) {
+  const contentTextAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleInsertLink = () => {
+    const textarea = contentTextAreaRef.current;
+
+    if (!textarea) {
+      return;
+    }
+
+    const selectionStart = textarea.selectionStart;
+    const selectionEnd = textarea.selectionEnd;
+
+    const selectedText = content.slice(selectionStart, selectionEnd);
+
+    const url = window.prompt("リンク先のURLを入力してください");
+
+    if (url === null) {
+      return;
+    }
+
+    const trimmedUrl = url.trim();
+
+    if (trimmedUrl === "") {
+      return;
+    }
+
+    const linkText = selectedText || "リンク名";
+    const markdownLink = `[${linkText}](${trimmedUrl})`;
+
+    const newContent =
+      content.slice(0, selectionStart) +
+      markdownLink +
+      content.slice(selectionEnd);
+
+    setContent(newContent);
+
+    const newCursorPosition = selectionStart + markdownLink.length;
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        newCursorPosition,
+        newCursorPosition
+      );
+    });
+  };
   return (
 //    if(!isOpen) return null;
     <div className="editor-card">
@@ -80,7 +127,8 @@ function LogForm({
               <button
                 type="button"
                 className="toolbar-button"
-                title="リンク追加（今後実装）"
+                title="リンクを追加"
+                onClick={handleInsertLink}
               >
                 <FiLink />
               </button>
@@ -106,6 +154,7 @@ function LogForm({
             </div>
 
             <textarea
+			  ref={contentTextAreaRef}
               className="log-textarea"
               placeholder="研究内容を記録..."
               value={content}

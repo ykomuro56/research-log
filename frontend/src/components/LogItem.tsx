@@ -125,20 +125,6 @@ function LogItem({
 		  更新: {formattedUpdatedAt}
 	    </span>
 	  </div>
-
-	  {isOpen && (
-		<div className="log-actions">
-		  <button
-			className="delete-button"
-			onClick={(e) => {
-			  e.stopPropagation();
-			  onDelete();
-			}}
-		  >
-			削除
-		  </button>
-		</div>
-	  )}
 	</div>
   )};
 export default LogItem;
