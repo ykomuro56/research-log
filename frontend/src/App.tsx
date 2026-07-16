@@ -20,6 +20,14 @@ type Log = {
   tags: Tag[];
 };
 
+type SortOption =
+  | "created-desc"
+  | "created-asc"
+  | "updated-desc"
+  | "updated-asc"
+  | "title-asc"
+  | "title-desc";
+
 function App() {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
@@ -32,6 +40,8 @@ function App() {
 
 	const [logs, setLogs] = useState<Log[]>([]);
 	const [tags, setTags] = useState<Tag[]>([]);
+
+	const [sortOption, setSortOption] = useState<SortOption>("created-desc");
 
 	const formRef = useRef<HTMLDivElement>(null);
 
@@ -187,6 +197,42 @@ function App() {
 	  });
 	  }
 	};
+	const sortedLogs = [...logs].sort((a, b) => {
+	  switch (sortOption) {
+		case "created-desc":
+		  return (
+			new Date(b.createdAt).getTime() -
+			new Date(a.createdAt).getTime()
+		  );
+
+		case "created-asc":
+		  return (
+			new Date(a.createdAt).getTime() -
+			new Date(b.createdAt).getTime()
+		  );
+
+		case "updated-desc":
+		  return (
+			new Date(b.updatedAt).getTime() -
+			new Date(a.updatedAt).getTime()
+		  );
+
+		case "updated-asc":
+		  return (
+			new Date(a.updatedAt).getTime() -
+			new Date(b.updatedAt).getTime()
+		  );
+
+		case "title-asc":
+		  return a.title.localeCompare(b.title, "ja");
+
+		case "title-desc":
+		  return b.title.localeCompare(a.title, "ja");
+
+		default:
+		  return 0;
+	  }
+	});
 	return (
 			<div style={{ maxWidth: "800px", margin: "40px auto" }}>
 				<div className="hero">
@@ -261,7 +307,43 @@ function App() {
 					/>
 				  </div>
 				)}
+				<div className="sort-control">
+				  <label htmlFor="log-sort">
+					並べ替え
+				  </label>
 
+				  <select
+					id="log-sort"
+					value={sortOption}
+					onChange={(event) =>
+					  setSortOption(event.target.value as SortOption)
+					}
+				  >
+					<option value="created-desc">
+					  作成日が新しい順
+					</option>
+
+					<option value="created-asc">
+					  作成日が古い順
+					</option>
+
+					<option value="updated-desc">
+					  更新日が新しい順
+					</option>
+
+					<option value="updated-asc">
+					  更新日が古い順
+					</option>
+
+					<option value="title-asc">
+					  タイトル昇順
+					</option>
+
+					<option value="title-desc">
+					  タイトル降順
+					</option>
+				  </select>
+				</div>
 				<TagList
 				  tags={tags}
 				  selectedTag={selectedTag}
@@ -297,7 +379,7 @@ function App() {
 				</div>
 
 				<LogList
-				  logs={logs}
+				  logs={sortedLogs}
 				  onDelete={deleteLog}
 				  onEdit={editLog}
 				/>

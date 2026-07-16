@@ -139,6 +139,44 @@
     background: #2563eb;
 }
 
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-control label {
+  color: #64748b;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.sort-control select {
+  cursor: pointer;
+
+  padding: 8px 32px 8px 10px;
+
+  color: #334155;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  font-size: 0.9rem;
+}
+
+.sort-control select:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.search-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .clear-button {
     position: absolute;
     right: 8px;
