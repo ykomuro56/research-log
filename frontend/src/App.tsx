@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "./config";
 import LogForm from "./components/LogForm";
 import LogList from "./components/LogList";
 import TagList from "./components/TagList";
@@ -46,7 +47,7 @@ function App() {
 	const formRef = useRef<HTMLDivElement>(null);
 
 	const fetchLogs = () => {
-	  fetch("http://localhost:8080/api/logs")
+	  fetch("/api/logs")
 	    .then((response) => response.json())
 	    .then((data) => {
 	      setLogs(data);
@@ -54,7 +55,7 @@ function App() {
 	};
 
 	const fetchTags = () => {
-	  fetch("http://localhost:8080/api/tags")
+	  fetch("api/tags")
 	    .then((response) => response.json())
 	    .then((data) => {
 	      setTags(data);
@@ -75,7 +76,7 @@ function App() {
 		  params.append("tag", selectedTag);
 		}
 
-		fetch(`http://localhost:8080/api/logs/search?${params.toString()}`)
+		fetch(`/api/logs/search?${params.toString()}`)
 		.then((response) => response.json())
 		.then((data) => {
 		  setLogs(data);
@@ -96,7 +97,7 @@ function App() {
 
 	const deleteLog = (id: number) => {
 	  fetch(
-		`http://localhost:8080/api/logs/${id}`,
+		`/api/logs/${id}`,
 	    {
 		  method: "DELETE",
 		}
@@ -139,7 +140,7 @@ function App() {
 	  return;
 	  }
 	  if (editingId === null) {
-		fetch("http://localhost:8080/api/logs", {
+		fetch("/api/logs", {
 	    method: "POST",
 	    headers: {
 	      "Content-Type": "application/json",
@@ -168,7 +169,7 @@ function App() {
 		    console.error(err);
 	  });
 	  } else {
-		fetch(`http://localhost:8080/api/logs/${editingId}`, {
+		fetch(`${API_BASE_URL}/api/logs/${editingId}`, {
 	    method: "PUT",
 	    headers: {
 	      "Content-Type": "application/json",
