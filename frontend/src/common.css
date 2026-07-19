@@ -17,6 +17,11 @@
     transition: .2s;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .input {
     padding: 10px 36px 10px 12px;
 
@@ -33,4 +38,10 @@
     border-radius: 10px;
 
     outline: none;
+}
+
+input:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
 }
