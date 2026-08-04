@@ -1,11 +1,16 @@
 package com.ykomuro.researchlog;
 
-import java.util.List;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class LogRequest {
 
-    private String title;
+	@NotBlank(message = "タイトルを入力してください。")
+	@Size(max = 100, message = "タイトルは100文字以内で入力してください。")
+	private String title;
 
+	@NotBlank(message = "本文を入力してください。")
+	@Size(max = 100000, message = "本文は100000文字以内で入力してください。")
     private String content;
 
     private String tags;

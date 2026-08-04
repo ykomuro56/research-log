@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
@@ -45,7 +47,7 @@ public class LogController {
     }
 
 	@PostMapping("/api/logs")
-	public void addLog(@RequestBody LogRequest request) {
+	public void addLog(@Valid @RequestBody LogRequest request) {
 		LocalDateTime now = LocalDateTime.now();
 
 		Log log = new Log(
@@ -68,7 +70,7 @@ public class LogController {
 	}
 
 	@PutMapping("/api/logs/{id}")
-	public void updateLog(@PathVariable Long id, @RequestBody LogRequest request) {
+	public void updateLog(@PathVariable Long id, @Valid @RequestBody LogRequest request) {
 
 		Log oldLog = repository.findById(id).orElseThrow();
 
