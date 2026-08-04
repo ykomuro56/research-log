@@ -348,8 +348,6 @@ function LogForm({
             Cancel
           </button>
 
-		  <p>isSaving: {String(isSaving)}</p>
-
           <button
 		    type="button"
             className="save-button button"
