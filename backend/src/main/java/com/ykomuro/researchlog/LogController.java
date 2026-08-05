@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,11 +18,6 @@ import java.time.LocalDateTime;
 import com.ykomuro.researchlog.LogRepository;
 
 @RestController
-@CrossOrigin(origins = {
-	"http://localhost:5173",
-	"http://127.0.0.1:5173",
-	"https://macbook-air-3.tail62f839.ts.net"
-})
 public class LogController {
 
 
