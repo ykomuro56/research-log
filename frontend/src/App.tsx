@@ -256,7 +256,15 @@ function App() {
 	  }
 	});
 	return (
-		<div style={{ maxWidth: "800px", margin: "40px auto" }}>
+		<div
+		  style={{
+		    width: "100%",
+		    maxWidth: "1100px",
+			margin: "40px auto",
+			padding: "0 16px",
+			boxSizing: "border-box",
+		  }}
+		>
 			<div className="hero">
 				<img
 					src={logo}

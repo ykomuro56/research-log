@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import com.ykomuro.researchlog.LogRepository;
 
@@ -42,7 +43,7 @@ public class LogController {
 
 	@PostMapping("/api/logs")
 	public void addLog(@Valid @RequestBody LogRequest request) {
-		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
 
 		Log log = new Log(
 			request.getTitle(),
@@ -71,7 +72,7 @@ public class LogController {
 		oldLog.setTitle(request.getTitle());
 		oldLog.setContent(request.getContent());
 		oldLog.setTags(convertTags(request.getTags()));
-		oldLog.setUpdatedAt(LocalDateTime.now());
+		oldLog.setUpdatedAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
 
 	    repository.save(oldLog);
 	}
