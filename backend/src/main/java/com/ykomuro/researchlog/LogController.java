@@ -6,18 +6,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import com.ykomuro.researchlog.LogRepository;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class LogController {
 
 
@@ -41,8 +42,8 @@ public class LogController {
     }
 
 	@PostMapping("/api/logs")
-	public void addLog(@RequestBody LogRequest request) {
-		LocalDateTime now = LocalDateTime.now();
+	public void addLog(@Valid @RequestBody LogRequest request) {
+		LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Tokyo"));
 
 		Log log = new Log(
 			request.getTitle(),
@@ -64,14 +65,14 @@ public class LogController {
 	}
 
 	@PutMapping("/api/logs/{id}")
-	public void updateLog(@PathVariable Long id, @RequestBody LogRequest request) {
+	public void updateLog(@PathVariable Long id, @Valid @RequestBody LogRequest request) {
 
 		Log oldLog = repository.findById(id).orElseThrow();
 
 		oldLog.setTitle(request.getTitle());
 		oldLog.setContent(request.getContent());
 		oldLog.setTags(convertTags(request.getTags()));
-		oldLog.setUpdatedAt(LocalDateTime.now());
+		oldLog.setUpdatedAt(LocalDateTime.now(ZoneId.of("Asia/Tokyo")));
 
 	    repository.save(oldLog);
 	}

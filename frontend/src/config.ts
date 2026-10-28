@@ -1,7 +1,13 @@
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const rawApiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL ?? "";
 
-if (!apiBaseUrl) {
-  throw new Error("VITE_API_BASE_URL is not defined");
-}
+export const API_BASE_URL =
+  rawApiBaseUrl.replace(/\/$/, "");
 
-export const API_BASE_URL = apiBaseUrl.replace(/\/$/, "");
+export const apiUrl = (path: string): string => {
+  const normalizedPath = path.startsWith("/")
+    ? path
+    : `/${path}`;
+
+  return `${API_BASE_URL}${normalizedPath}`;
+};

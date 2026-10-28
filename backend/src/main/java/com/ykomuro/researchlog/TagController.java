@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class TagController {
 
     private final TagRepository repository;

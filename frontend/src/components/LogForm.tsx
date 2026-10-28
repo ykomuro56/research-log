@@ -13,6 +13,7 @@ type LogFormProps = {
   setTags: (tags: string) => void;
 
   isEditing: boolean;
+  isSaving: boolean;
   onCancel: () => void;
   onSave: () => void;
 };
@@ -25,6 +26,7 @@ function LogForm({
   setContent,
   setTags,
   isEditing,
+  isSaving,
   onCancel,
   onSave,
 //  isOpen,
@@ -238,6 +240,7 @@ function LogForm({
             placeholder="タイトル"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+			disabled={isSaving}
           />
         </div>
 
@@ -314,6 +317,7 @@ function LogForm({
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={12}
+			  disabled={isSaving}
             />
 
           </div>
@@ -329,23 +333,34 @@ function LogForm({
             placeholder="解析、データ取得、エラー処理..."
             value={tags}
             onChange={(e) => setTags(e.target.value)}
+			disabled={isSaving}
           />
         </div>
 
         <div className="form-actions">
 
           <button
+		    type="button"
             className="cancel-button button"
             onClick={onCancel}
+			disabled={isSaving}
           >
             Cancel
           </button>
 
           <button
+		    type="button"
             className="save-button button"
-            onClick={onSave}
+            onClick={() => {
+			  onSave();
+			}}
+			disabled={isSaving}
           >
-            {isEditing ? "更新" : "保存"}
+		    {isSaving 
+			  ? "保存中" 
+			  : isEditing 
+			    ? "更新" 
+				: "保存"}
           </button>
 
         </div>
